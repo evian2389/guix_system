@@ -7,20 +7,42 @@ GUIX_PULLED_CMD ?= $(PROFILE_DIR)/profile/bin/guix
 # Path to our config directory (relative to Makefile)
 CONFIG_DIR := $(CURDIR)/config
 
-# Use 'guix time-machine' for reproducible builds based on the lock file.
-# Pass custom module load paths directly to time-machine.
-GUIX_TM = guix time-machine \
+# Base guix time-machine command with common load paths
+GUIX_TM_BASE = guix time-machine \
+	-L $(CURDIR) \
 	-L $(CONFIG_DIR) \
 	-L $(CONFIG_DIR)/home-services \
 	-L $(CONFIG_DIR)/util \
-	-L $(CONFIG_DIR)/packages \
-	-C channels/channels-lock.scm --
+	-L $(CONFIG_DIR)/packages
+
+# Use 'guix time-machine' for reproducible builds based on the lock file.
+# Pass custom module load paths directly to time-machine.
+GUIX_TM = $(GUIX_TM_BASE) -C channels/channels-lock.scm --
 
 # Default system and user for initial setup (can be overridden)
 DEFAULT_SYSTEM ?= ser8
 DEFAULT_USER ?= orka
 
-.PHONY: all init install-system reconfigure-system reconfigure-home install-user-packages channel-update guix-pull clean
+# --- General Configuration Variables (from provided config, generalized) ---
+PULL_EXTRA_OPTIONS=
+# --allow-downgrades
+
+ROOT_MOUNT_POINT=/mnt
+
+VERSION=latest
+
+# Alternative channel file for GUIX_ALT_TM (defaults to existing lock file)
+GUIX_ALT_CHANNELS_FILE ?= channels/channels-lock.scm
+
+# An alternative 'guix time-machine' setup, using existing load paths but allowing
+# for an alternate channel file. This provides flexibility for different build contexts.
+GUIX_ALT_TM = $(GUIX_TM_BASE) -C $(GUIX_ALT_CHANNELS_FILE) --
+
+# System configuration file for live image builds
+LIVE_SYSTEM_CONFIG ?= $(CONFIG_DIR)/systems/$(DEFAULT_SYSTEM)/configuration.scm
+# --- End General Configuration Variables ---
+
+.PHONY: all init install-system reconfigure-system reconfigure-home install-user-packages channel-update guix-pull clean cow-store target build-live-image target/live-image.iso target/release release-live-image
 
 all: reconfigure-system reconfigure-home
 
@@ -68,3 +90,30 @@ clean:
 # export GUILD_PATH=$$GUILD_PATH:$(abspath config/modules)
 # Example: guix lint --load-path=$(CONFIG_DIR)/modules $(CONFIG_DIR)/users/$(DEFAULT_USER)/home.scm
 # guix lint -L $(CONFIG_DIR)/modules $(CONFIG_DIR)/users/$(DEFAULT_USER)/home.scm
+
+
+# --- Generalized Targets (from provided config, adapted) ---
+
+# Target to start the cow-store service
+cow-store:
+	sudo herd start cow-store ${ROOT_MOUNT_POINT}
+
+# Utility target to create a 'target' directory
+target:
+	mkdir -p target
+
+# Live image build
+build-live-image:
+	ALT_BUILD_TARGET=live-system $(GUIX_ALT_TM) system image --image-type=iso9660 \
+	${LIVE_SYSTEM_CONFIG} -r target/live-image-tmp.iso
+
+target/live-image.iso: build-live-image target
+	mv -f target/live-image-tmp.iso target/live-image.iso
+
+target/release:
+	mkdir -p target/release
+
+# Release packaging for live image
+release-live-image: target/live-image.iso target/release
+	cp -df $< target/release/live-image-${VERSION}-x86_64.iso
+	gpg -ab target/release/live-image-${VERSION}-x86_64.iso
