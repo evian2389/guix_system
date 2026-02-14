@@ -10,6 +10,7 @@
   #:use-module (nongnu packages games)       ;; For steam-devices-udev-rules
   #:use-module (raynet-guix home-services games)
   #:use-module (gnu home)
+  #:use-module (gnu system mapped-devices)
   #:use-module (raynet-guix users orka home))
 
 (define* (base-operating-system #:key hostname
