@@ -8,15 +8,6 @@
   #:use-module (nongnu packages games))
 
 ;;
-;; System-level service for Steam hardware support.
-;;
-
-(define steam-support-service
-  (service udev-service-type
-           (udev-configuration
-            (rules (list steam-devices-udev-rules)))))
-
-;;
 ;; Home-level service for installing the Steam package.
 ;;
 

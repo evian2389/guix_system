@@ -7,6 +7,7 @@
   #:use-module (gnu services guix)           ;; For guix-service-type
   #:use-module (gnu system extensions)       ;; For guix-extension
   #:use-module (guix store)                  ;; For plain-file
+  #:use-module (nongnu packages games)       ;; For steam-devices-udev-rules
   #:use-module (config home-services games)
   #:use-module (gnu home)
   #:use-module (config users orka home))
@@ -55,7 +56,8 @@
                                %default-substitute-urls))))
       (service openssh-service-type)      ;; Enable OpenSSH server
       (service pipewire-service-type)
-      steam-support-service
+      ;; Add udev rules for Steam devices
+      (udev-rules-service 'steam-devices steam-devices-udev-rules)
       (service gnome-desktop-service-type)
       (service gdm-service-type)
       (home-environment-service-type

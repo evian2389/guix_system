@@ -8,7 +8,7 @@ GUIX_PULLED_CMD ?= $(PROFILE_DIR)/profile/bin/guix
 CONFIG_DIR := $(CURDIR)/config
 
 # Base guix time-machine command with common load paths
-GUIX_TM_BASE = guix time-machine \
+GUIX_TM_BASE = guix time-machine --debug=4 \
 	-L $(CURDIR) \
 	-L $(CONFIG_DIR) \
 	-L $(CONFIG_DIR)/home-services \
@@ -51,6 +51,9 @@ init: guix-pull channel-update
 
 install-system: guix-pull channel-update
 	@echo "Installing Guix System to /mnt for $(DEFAULT_SYSTEM)..."
+	@echo "DEBUG: GUILE_LOAD_PATH = ${GUILE_LOAD_PATH}"
+	@echo "DEBUG: CURDIR = $(CURDIR)"
+	@echo "DEBUG: CONFIG_DIR = $(CONFIG_DIR)"
 	sudo -E $(GUIX_TM) system init $(CONFIG_DIR)/systems/$(DEFAULT_SYSTEM)/configuration.scm /mnt
 
 reconfigure-system:
