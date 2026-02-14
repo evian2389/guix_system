@@ -1,4 +1,5 @@
 (define-module (raynet-guix users orka home)
+  #:export (orka-home-environment)
   #:use-module (gnu)
   #:use-module (guix)
   #:use-module (guix-home)

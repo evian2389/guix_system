@@ -83,6 +83,8 @@ To use these configurations for a **fresh installation** on a new drive, follow 
     *   With the disk prepared and `configuration.scm` updated, perform the initial installation:
         ```bash
         herd start cow-store /mnt
+        export TMPDIR=/mnt/data/raynet-guix/tmp
+        mkdir -p $TMPDIR
         sudo make install-system
         ```
 

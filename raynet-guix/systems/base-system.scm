@@ -1,4 +1,5 @@
 (define-module (raynet-guix systems base-system)
+  #:export (base-operating-system)
   #:use-module (gnu system)
   #:use-module (gnu system mapped-devices) ; Moved for potential order dependency
   #:use-module (gnu services)

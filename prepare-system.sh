@@ -89,6 +89,9 @@ sudo mount "$EFI_PARTITION" /mnt/boot/efi
 
 # Activate the swapfile
 sudo swapon /mnt/swap/swapfile
+export TMPDIR=/mnt/data/raynet-guix/tmp
+mkdir -p $TMPDIR
+
 
 # Get the UUIDs for configuration.scm
 echo "========================================================================"
@@ -115,5 +118,6 @@ echo "========================================================================"
 #
 # 3. BUILD YOUR SYSTEM:
 #    Once configuration.scm is updated, run:
+#    make cow-store
 #    sudo make install-system
 # ========================================================================
