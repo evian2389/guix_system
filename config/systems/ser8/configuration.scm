@@ -99,7 +99,7 @@
                   (home-directory "/home/orka")
                   (supplementary-groups '("wheel" "netdev" "audio" "video"))
                   ;; Replace the placeholder below with the hash generated from the guile command
-                  (password "$6$mbu/ym8zacwsRcoV$Vyw7sVe8MP0Wf/e223Mcqn7Isuw1/QNpN078tpm5wNRGtD.hKvmAxvpYjvLHa3.NoyOJ06hsmjYrYim/GkSN90")
+                  (password "$6$randomsalt$XNp4oTKzawAP8oMfu5HfpSLdBBJjQfGng8k8zfafP/13Z0WNgB4X7qe27uNMqPgx50rQ8h6e2MM7m5nrdwM1h0")
                   (email "evian2389@gmail.com"))
                 %base-user-accounts))
 
