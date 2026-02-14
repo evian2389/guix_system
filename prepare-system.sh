@@ -6,7 +6,7 @@ set -e
 #
 # IMPORTANT:
 # - Run this script from within a 'guix shell' with the necessary tools:
-#   guix shell parted cryptsetup btrfs-progs git
+#   guix shell parted cryptsetup btrfs-progs git make
 #   git clone https://codeberg.org/orka/guix_system.git
 # - This script will DESTROY all data on the selected disk.
 # - The script assumes the disk has two partitions:

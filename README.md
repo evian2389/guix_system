@@ -58,7 +58,7 @@ To use these configurations for a **fresh installation** on a new drive, follow 
 3.  **Prepare the Disk (LUKS & Btrfs)**:
     *   Enter a Guix shell with the necessary tools:
         ```bash
-        guix shell parted cryptsetup btrfs-progs --
+        guix shell parted cryptsetup btrfs-progs make git --
         ```
     *   Run the preparation script. **WARNING: This will erase all data on the selected disk.**
         ```bash

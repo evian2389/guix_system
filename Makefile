@@ -10,6 +10,7 @@ CONFIG_DIR := $(CURDIR)/config
 # Base guix time-machine command with common load paths
 GUIX_TM_BASE = guix time-machine --debug=4 \
 	-L $(CURDIR) \
+	-L $(PROFILE_DIR)/profile/share/guile/site/3.0 \
 	-L $(CONFIG_DIR) \
 	-L $(CONFIG_DIR)/home-services \
 	-L $(CONFIG_DIR)/util \
