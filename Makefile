@@ -27,11 +27,11 @@ init: guix-pull channel-update
 
 install-system: guix-pull channel-update
 	@echo "Installing Guix System to /mnt for $(DEFAULT_SYSTEM)..."
-	sudo $(GUIX_TM) system init $(CONFIG_DIR)/systems/$(DEFAULT_SYSTEM)/configuration.scm /mnt
+	sudo -E $(GUIX_TM) system init $(CONFIG_DIR)/systems/$(DEFAULT_SYSTEM)/configuration.scm /mnt
 
 reconfigure-system:
 	@echo "Reconfiguring Guix System for $(DEFAULT_SYSTEM)..."
-	sudo $(GUIX_TM) system reconfigure $(CONFIG_DIR)/systems/$(DEFAULT_SYSTEM)/configuration.scm
+	sudo -E $(GUIX_TM) system reconfigure $(CONFIG_DIR)/systems/$(DEFAULT_SYSTEM)/configuration.scm
 
 reconfigure-home:
 	@echo "Reconfiguring Guix Home for $(DEFAULT_USER)..."
