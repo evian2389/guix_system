@@ -5,7 +5,7 @@
   #:use-module (gnu services udev)
   #:use-module (gnu packages games)
   #:use-module (gnu home services)
-  #:use-module (nongnu packages games))
+  #:use-module (nongnu packages game-client))
 
 ;;
 ;; Home-level service for installing the Steam package.

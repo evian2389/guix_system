@@ -8,7 +8,7 @@
   #:use-module (gnu services ssh)            ;; For openssh-service-type
   #:use-module (gnu services guix)           ;; For guix-service-type
   #:use-module (guix store)                  ;; For plain-file
-  #:use-module (nongnu packages games)       ;; For steam-devices-udev-rules
+  #:use-module (gnu packages games)       ;; For steam-devices-udev-rules
   #:use-module (raynet-guix home-services games)
   #:use-module (gnu home)
   #:use-module (raynet-guix users orka home))

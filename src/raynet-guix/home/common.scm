@@ -5,6 +5,8 @@
   #:use-module (gnu home services shells) ; Added for zsh
   #:use-module (gnu packages fcitx5) ; Added for fcitx5
   #:use-module (gnu packages admin) ; For htop
+  #:use-module (gnu packages rust)
+  #:use-module (gnu packages video)
   #:use-module (raynet-guix home-services video)      ; For home-video-service-type
   #:use-module (selected-guix-works packages fonts) ; For font-nerd-fonts-jetbrains-mono
   #:use-module (abbe packages nerd-fonts)    ; For font-nerd-font-d2coding
@@ -15,16 +17,18 @@
 (define common-home-environment
   (home-environment
    (packages
-    (list
-     "git"
-     "htop"    ; Moved back to common
-     "zsh"
-     "fcitx5"
-     "fcitx5-hangul"
-     "fcitx5-gtk"  ; For GTK integration
-     "fcitx5-qt"
-     "font-nerd-fonts-jetbrains-mono"
-     "font-nerd-font-d2coding"))      ; Added D2Coding Nerd Font
+       (list
+        "git"
+        "rust"
+        "htop"    ; Moved back to common
+        "zsh"
+        "mpv"
+        "fcitx5"
+        "fcitx5-hangul"
+        "fcitx5-gtk"  ; For GTK integration
+        "fcitx5-qt"
+        "font-nerd-fonts-jetbrains-mono"
+        "font-nerd-font-d2coding"))      ; Added D2Coding Nerd Font
    (session-variables
     '(("GTK_IM_MODULE" . "fcitx")
       ("QT_IM_MODULE" . "fcitx")
