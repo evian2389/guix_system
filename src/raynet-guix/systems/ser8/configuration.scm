@@ -74,8 +74,8 @@
                 (device "none")
                 (type "tmpfs")
                 (flags '(no-dev no-suid no-atime))
-                (check? #f))
-      %base-file-systems))) ;; Add %base-file-systems to the end
+                (check? #f)))
+      %base-file-systems)) ;; Add %base-file-systems to the end
 
 (base-operating-system
  #:hostname "ser8"
