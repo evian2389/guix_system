@@ -4,6 +4,7 @@
   #:use-module (gnu system uuid)
   #:use-module (gnu system file-systems)
   #:use-module (gnu system mapped-devices)
+  #:use-module (gnu packages linux) ;; <--- Add this for bluez, bluez-alsa, etc.
   #:use-module (nongnu packages linux)
   #:use-module (nongnu packages firmware)
   #:use-module (srfi srfi-1)                 ;; For 'filter'
@@ -87,10 +88,8 @@
  #:swap-devices (list "/swap/swapfile")
 
  #:packages (append (list bluez
-                           bluez-alsa
                            brightnessctl
-                           exfat-utils
-                           fuse-exfat
+                           exfatprogs
                            git
                            gvfs    ;; Enable user mounts
                            intel-media-driver/nonfree
