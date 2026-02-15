@@ -43,34 +43,31 @@
     (firmware firmware)
     (packages packages)
     (services
-      (append (list
-        ;; Configure the Guix service with all substitutes and authorized keys
-        (modify-services %base-services
-          (guix-service-type config =>
-            (guix-configuration
-              (inherit config)
-              (substitute-urls
-                (append (list "https://substitutes.nonguix.org"
-                              "https://nonguix-proxy.ditigal.xyz"
-                              "https://berlin-guix.jing.rocks"
-                              "https://bordeaux-guix.jing.rocks"
-                              "https://mirrors.sjtug.sjtu.edu.cn/guix"
-                              "https://mirrors.sjtug.sjtu.edu.cn/guix-bordeaux")
-                        %default-substitute-urls))
-              (authorized-keys
-                (append (list (plain-file "nonguix.pub"
-                                          "(public-key (ecc (curve Ed25519) (q #C1FD53E5D4CE971933EC50C9F307AE2171A2D3B52C804642A7A35F84F3A4EA98#)))"))
-                              %default-authorized-guix-keys)))))
-        (service openssh-service-type)      ;; Enable OpenSSH server
-        ;; Add udev rules for Steam devices
-        (udev-rules-service 'steam-devices steam-devices-udev-rules)
-        (service network-manager-service-type)
-        (service gnome-desktop-service-type)
-        (service gdm-service-type)
-        (service guix-home-service-type
-         `(("orka" ,orka-home-environment))) ;; Use the alist format
-         )
-      %base-services))
+      (append
+       (list (service openssh-service-type)      ;; Enable OpenSSH server
+             ;; Add udev rules for Steam devices
+             (udev-rules-service 'steam-devices steam-devices-udev-rules)
+             (service network-manager-service-type)
+             (service gnome-desktop-service-type)
+             (service gdm-service-type)
+             (service guix-home-service-type
+              `(("orka" ,orka-home-environment)))) ;; Use the alist format
+       (modify-services %base-services
+         (guix-service-type config =>
+           (guix-configuration
+             (inherit config)
+             (substitute-urls
+              (append (list "https://substitutes.nonguix.org"
+                            "https://nonguix-proxy.ditigal.xyz"
+                            "https://berlin-guix.jing.rocks"
+                            "https://bordeaux-guix.jing.rocks"
+                            "https://mirrors.sjtug.sjtu.edu.cn/guix"
+                            "https://mirrors.sjtug.sjtu.edu.cn/guix-bordeaux")
+                      %default-substitute-urls))
+             (authorized-keys
+              (append (list (plain-file "nonguix.pub"
+                                        "(public-key (ecc (curve Ed25519) (q #C1FD53E5D4CE971933EC50C9F307AE2171A2D3B52C804642A7A35F84F3A4EA98#)))"))
+                            %default-authorized-guix-keys)))))))
 
     (keyboard-layout (keyboard-layout "kr"))
     (users
