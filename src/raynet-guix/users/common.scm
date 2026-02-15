@@ -1,7 +1,7 @@
 (define-module (raynet-guix users common)
   #:use-module (gnu)
-  #:use-module (guix-home)
-  #:use-module (guix-home services)
+  #:use-module (gnu home)
+  #:use-module (gnu home services)
   #:use-module (gnu home services shells) ; Added for zsh
   #:use-module (gnu packages fcitx5) ; Added for fcitx5
   #:use-module (gnu packages admin) ; For htop
