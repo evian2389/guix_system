@@ -3,6 +3,7 @@
   #:use-module (gnu home services)
   #:use-module (gnu home services shells) ; Added for zsh
   #:use-module (gnu home services sound) ; Added for pipewire
+  #:use-module (gnu home services desktop)
   #:use-module (gnu packages fcitx5) ; Added for fcitx5
   #:use-module (gnu packages admin) ; For htop
   #:use-module (gnu packages rust)
@@ -33,6 +34,7 @@
    (services
     (append extra-services
             (list
+             (service home-dbus-service-type)
              (service home-pipewire-service-type)
              (service home-zsh-service-type)
              (simple-service 'common-environment-variables

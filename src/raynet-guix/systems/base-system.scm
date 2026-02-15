@@ -54,7 +54,6 @@
       (append
        (list (service openssh-service-type)      ;; Enable OpenSSH server
              (service elogind-service-type)
-             (service dbus-service-type)
              ;; Add udev rules for Steam devices
              (udev-rules-service 'steam-devices steam-devices-udev-rules)
              (service wpa-supplicant-service-type)
