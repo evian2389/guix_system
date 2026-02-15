@@ -1,4 +1,4 @@
-(define-module (raynet-guix home common)
+(define-module (raynet-guix users common)
   #:use-module (gnu)
   #:use-module (guix-home)
   #:use-module (guix-home services)
