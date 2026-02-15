@@ -4,7 +4,9 @@
   #:use-module (gnu system uuid)
   #:use-module (gnu system file-systems)
   #:use-module (gnu system mapped-devices)
-  #:use-module (gnu packages linux) ;; <--- Add this for bluez, bluez-alsa, etc.
+  #:use-module (gnu packages linux) ;; <--- Add this for bluez
+  #:use-module (gnu packages version-control)
+  #:use-module (gnu packages gnome)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu packages firmware)
   #:use-module (srfi srfi-1)                 ;; For 'filter'
@@ -17,7 +19,7 @@
 ;; provides the details unique to this hardware.
 (define ser8-mapped-devices
   (list (mapped-device
-         (source (uuid "YOUR_LUKS_PARTITION_UUID_HERE"))
+         (source (uuid "672ede9b-bded-4f19-9f89-b758927e975f"))
          (target "enc")
          (type luks-device-mapping))))
 
@@ -61,7 +63,7 @@
     (file-system
       (mount-point "/boot/efi")
       (type "vfat")
-      (device (uuid "YOUR_EFI_PARTITION_UUID_HERE" 'fat32))) ;;TODO check UUIDs
+      (device (uuid "6B0B-5E9D" 'fat32))) ;;TODO check UUIDs
     (file-system
                 (mount-point "/tmp")
                 (device "none")
@@ -92,7 +94,6 @@
                            exfatprogs
                            git
                            gvfs    ;; Enable user mounts
-                           intel-media-driver/nonfree
                            libva-utils
                            ntfs-3g
                            stow
