@@ -45,6 +45,7 @@
     (services
       (append
        (list (service openssh-service-type)      ;; Enable OpenSSH server
+             (service elogind-service-type)
              ;; Add udev rules for Steam devices
              (udev-rules-service 'steam-devices steam-devices-udev-rules)
              (service network-manager-service-type)
