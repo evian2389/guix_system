@@ -56,7 +56,7 @@ all: reconfigure-system reconfigure-home
 init: guix-pull channel-update
 	@echo "Initialization complete. Run 'make install-system' for a fresh install, or 'make all' to reconfigure an existing system."
 
-install-system: guix-pull channel-update
+install-system:
 	@echo "Installing Guix System to /mnt for $(DEFAULT_SYSTEM)..."
 	@echo "DEBUG: GUILE_LOAD_PATH = ${GUILE_LOAD_PATH}"
 	@echo "DEBUG: CURDIR = $(CURDIR)"
