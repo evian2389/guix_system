@@ -3,7 +3,8 @@
   #:use-module (gnu)
   #:use-module (guix)
   #:use-module (gnu home)
-  #:use-module (gnu home services files)   ; For home-directory-configuration
+  #:use-module (gnu home services)
+  #:use-module (gnu home services utils)   ; For home-directory-configuration
   #:use-module (raynet-guix users common)
   #:use-module (raynet-guix home-services games)      ; For home-steam-service-type
   #:use-module (raynet-guix home-services emacs)      ; For home-emacs-config-service-type

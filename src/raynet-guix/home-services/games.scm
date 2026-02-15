@@ -2,7 +2,7 @@
   #:use-module (gnu)
   #:use-module (guix)
   #:use-module (gnu services)
-  #:use-module (gnu services udev)
+  #:use-module (gnu services base)
   #:use-module (gnu packages games)
   #:use-module (gnu home services)
   #:use-module (nongnu packages game-client))
