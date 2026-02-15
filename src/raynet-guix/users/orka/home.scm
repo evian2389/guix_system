@@ -12,22 +12,15 @@
   #:use-module (srfi srfi-1)
   #:use-module (raynet-guix users common))
 
-
 (define orka-home-environment
-  (home-environment
-   (inherit common-home-environment)
-   (packages
-    (append
-     (list) ;; Add specific orka packages here if needed
-     %base-packages))
-   (services
-     (append
-      (list
-        (service home-games-service-type)
-        (service home-emacs-config-service-type)
-        (service home-finance-service-type)
-        (service home-dotfiles-service-type
-                  (home-dotfiles-configuration
-                  (source-directory ".")
-                  (directories '("config/users/orka/files")))))
-      (home-environment-services common-home-environment)))))
+  (common-home-environment
+   #:extra-packages %base-packages ;; Assuming %base-packages are orka-specific
+   #:extra-services
+   (list
+    (service home-games-service-type)
+    (service home-emacs-config-service-type)
+    (service home-finance-service-type)
+    (service home-dotfiles-service-type
+              (home-dotfiles-configuration
+               (source-directory ".")
+               (directories '("config/users/orka/files")))))))

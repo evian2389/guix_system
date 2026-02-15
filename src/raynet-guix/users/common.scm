@@ -11,31 +11,34 @@
   #:use-module (selected-guix-works packages fonts) ; For font-nerd-fonts-jetbrains-mono
   #:use-module (abbe packages nerd-fonts)    ; For font-nerd-font-d2coding
   #:use-module (gnu services)
+  #:use-module (guix gexp) ; For define*
   #:export (common-home-environment))
 
-(define common-home-environment
+(define* (common-home-environment #:key (extra-packages '()) (extra-services '()))
   (home-environment
    (packages
-       (list
-        "git"
-        "rust"
-        "htop"    ; Moved back to common
-        "zsh"
-        "mpv"
-        "fcitx5"
-        "fcitx5-hangul"
-        "fcitx5-gtk"  ; For GTK integration
-        "fcitx5-qt"
-        "font-nerd-fonts-jetbrains-mono"
-        "font-nerd-font-d2coding"))      ; Added D2Coding Nerd Font
+    (append extra-packages
+            (list
+             "git"
+             "rust"
+             "htop"    ; Moved back to common
+             "zsh"
+             "mpv"
+             "fcitx5"
+             "fcitx5-hangul"
+             "fcitx5-gtk"  ; For GTK integration
+             "fcitx5-qt"
+             "font-nerd-fonts-jetbrains-mono"
+             "font-nerd-font-d2coding")))      ; Added D2Coding Nerd Font
    (services
-    (list
-     (service home-pipewire-service-type)
-     (service home-zsh-service-type)
-     (service home-environment-variables-service-type
-              '(("GTK_IM_MODULE" . "fcitx")
-                ("QT_IM_MODULE" . "fcitx")
-                ("XMODIFIERS" . "@im=fcitx")))
-     (service home-video-service-type)      ; For ffmpeg and v4l-utils
-     ;; Add common home services here
-     ))))
+    (append extra-services
+            (list
+             (service home-pipewire-service-type)
+             (service home-zsh-service-type)
+             (service home-environment-variables-service-type
+                      '(("GTK_IM_MODULE" . "fcitx")
+                        ("QT_IM_MODULE" . "fcitx")
+                        ("XMODIFIERS" . "@im=fcitx")))
+             (service home-video-service-type)      ; For ffmpeg and v4l-utils
+             ;; Add common home services here
+             )))))

@@ -39,7 +39,11 @@
     (bootloader bootloader)
     (mapped-devices mapped-devices)
     (file-systems file-systems)
-    (swap-devices swap-devices)
+    (swap-devices (map (lambda (device)
+                         (if (string? device)
+                             (swap-space (target device))
+                             device))
+                       swap-devices))
     (firmware firmware)
     (packages packages)
     (services
@@ -48,6 +52,7 @@
              (service elogind-service-type)
              ;; Add udev rules for Steam devices
              (udev-rules-service 'steam-devices steam-devices-udev-rules)
+             (service wpa-supplicant-service-type)
              (service network-manager-service-type)
              (service gnome-desktop-service-type)
              (service gdm-service-type)
