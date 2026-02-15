@@ -7,11 +7,13 @@
   #:use-module (gnu system mapped-devices) ; Moved for potential order dependency
   #:use-module (gnu services)
   #:use-module (gnu services base)
+  #:use-module (gnu services linux)
   #:use-module (gnu services audio)
   #:use-module (gnu services desktop)
   #:use-module (gnu services ssh)            ;; For openssh-service-type
   #:use-module (gnu services guix)           ;; For guix-service-type
-  #:use-module (guix store)                  ;; For plain-file
+  #:use-module (guix gexp)                  ;; For plain-file
+  #:use-module (guix store)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages games)       ;; For steam-devices-udev-rules
   #:use-module (raynet-guix home-services games)
@@ -57,7 +59,6 @@
                                           "(public-key (ecc (curve Ed25519) (q #C1FD53E5D4CE971933EC50C9F307AE2171A2D3B52C804642A7A35F84F3A4EA98#)))"))
                               %default-authorized-guix-keys)))))
         (service openssh-service-type)      ;; Enable OpenSSH server
-        (service pipewire-service-type)
         ;; Add udev rules for Steam devices
         (udev-rules-service 'steam-devices steam-devices-udev-rules)
         (service gnome-desktop-service-type)

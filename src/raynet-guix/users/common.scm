@@ -2,6 +2,7 @@
   #:use-module (gnu home)
   #:use-module (gnu home services)
   #:use-module (gnu home services shells) ; Added for zsh
+  #:use-module (gnu home services sound) ; Added for pipewire
   #:use-module (gnu packages fcitx5) ; Added for fcitx5
   #:use-module (gnu packages admin) ; For htop
   #:use-module (gnu packages rust)
@@ -29,6 +30,7 @@
         "font-nerd-font-d2coding"))      ; Added D2Coding Nerd Font
    (services
     (list
+     (service home-pipewire-service-type)
      (service home-zsh-service-type)
      (service home-environment-variables-service-type
               '(("GTK_IM_MODULE" . "fcitx")
