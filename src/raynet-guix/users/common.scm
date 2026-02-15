@@ -35,10 +35,11 @@
             (list
              (service home-pipewire-service-type)
              (service home-zsh-service-type)
-             (service home-environment-variables-service-type
-                      '(("GTK_IM_MODULE" . "fcitx")
-                        ("QT_IM_MODULE" . "fcitx")
-                        ("XMODIFIERS" . "@im=fcitx")))
+             (simple-service 'common-environment-variables
+                             home-environment-variables-service-type
+                             '(("GTK_IM_MODULE" . "fcitx")
+                               ("QT_IM_MODULE" . "fcitx")
+                               ("XMODIFIERS" . "@im=fcitx")))
              (service home-video-service-type)      ; For ffmpeg and v4l-utils
              ;; Add common home services here
              )))))
