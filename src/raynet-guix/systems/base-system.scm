@@ -4,6 +4,7 @@
   #:use-module (gnu system keyboard)
   #:use-module (gnu system accounts)
   #:use-module (gnu system shadow)
+  #:use-module (gnu system file-systems)
   #:use-module (gnu system mapped-devices) ; Moved for potential order dependency
   #:use-module (gnu services)
   #:use-module (gnu services base)
