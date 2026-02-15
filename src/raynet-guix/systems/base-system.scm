@@ -62,8 +62,8 @@
         (service gnome-desktop-service-type)
         (service gdm-service-type)
         (home-environment-service-type
-         orka-home-environment)))
-      %base-services)
+         orka-home-environment))
+      %base-services))
 
     (keyboard-layout (keyboard-layout "kr"))
     (users
