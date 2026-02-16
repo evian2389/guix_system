@@ -42,14 +42,16 @@ fi
 sudo mkfs.fat -F32 "$EFI_PARTITION"
 
 # Create the LUKS container
-sudo cryptsetup luksFormat --type luks2 --pbkdf pbkdf2 "$LUKS_PARTITION"
-sudo cryptsetup luksOpen "$LUKS_PARTITION" enc
+#sudo cryptsetup luksFormat --type luks2 --pbkdf pbkdf2 "$LUKS_PARTITION"
+#sudo cryptsetup luksOpen "$LUKS_PARTITION" enc
 
 # Create the Btrfs filesystem
-sudo mkfs.btrfs -L guixroot /dev/mapper/enc
+#sudo mkfs.btrfs -L guixroot /dev/mapper/enc
+mkfs.btrfs -L guixroot /dev/nvme...
 
 # Mount the top-level Btrfs volume
-sudo mount /dev/mapper/enc /mnt
+#sudo mount /dev/mapper/enc /mnt
+sudo mount /dev/nvme... /mnt
 cd /mnt
 
 # Create all the desired subvolumes
