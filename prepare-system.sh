@@ -74,19 +74,23 @@ sudo umount /mnt
 # Mount the subvolumes with compression
 BTRFS_OPTS="rw,noatime,compress=zstd,discard=async,space_cache=v2"
 sudo mount -o $BTRFS_OPTS,subvol=@ /dev/mapper/enc /mnt
-sudo mkdir -p /mnt/{boot,home,gnu,data,var,var/log,opt,swap}
+sudo mkdir -p /mnt/{boot,home,gnu,data,var,opt,swap}
 sudo mount -o $BTRFS_OPTS,subvol=@boot /dev/mapper/enc /mnt/boot
 sudo mount -o $BTRFS_OPTS,subvol=@home /dev/mapper/enc /mnt/home
 sudo mount -o $BTRFS_OPTS,subvol=@gnu /dev/mapper/enc /mnt/gnu
 sudo mount -o $BTRFS_OPTS,subvol=@data /dev/mapper/enc /mnt/data
 sudo mount -o $BTRFS_OPTS,subvol=@var /dev/mapper/enc /mnt/var
+
+sudo mkdir -p /mnt/var/log
+
+sudo mount -o $BTRFS_OPTS,subvol=@var-log /dev/mapper/enc /mnt/var/log
 sudo mount -o $BTRFS_OPTS,subvol=@opt /dev/mapper/enc /mnt/opt
 sudo mount -o $BTRFS_OPTS,subvol=@swap /dev/mapper/enc /mnt/swap
 
 # Mount the EFI partition
 sudo mkdir -p /mnt/boot/efi
 sudo mount "$EFI_PARTITION" /mnt/boot/efi
-sudo mount -o $BTRFS_OPTS,subvol=@var-log /dev/mapper/enc /mnt/var/log
+
 
 # Create the swapfile
 sudo btrfs filesystem mkswapfile --size 64g --uuid clear @swap/swapfile
