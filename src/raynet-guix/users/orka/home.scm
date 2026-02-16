@@ -19,7 +19,7 @@
    #:extra-services
    (list
     (service home-games-service-type)
-    (service home-emacs-config-service-type)
+    ;(service home-emacs-config-service-type)
     (service home-finance-service-type)
     ;;(service home-files-service-type
     ;;         `(( ".bashrc" . ,(local-file (string-append (dirname (current-filename)) "/files/bashrc")))))
