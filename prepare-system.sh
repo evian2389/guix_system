@@ -92,6 +92,8 @@ sudo swapon /mnt/swap/swapfile
 export TMPDIR=/mnt/data/raynet-guix/tmp
 mkdir -p $TMPDIR
 
+export GUIX_PROFILE="/mnt/data/guix_system/env/profile"
+. "$GUIX_PROFILE/etc/profile"
 
 # Get the UUIDs for configuration.scm
 echo "========================================================================"
