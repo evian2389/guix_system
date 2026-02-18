@@ -29,8 +29,9 @@
 (define* (base-operating-system #:key hostname
                                  firmware
                                  bootloader
-                                 mapped-devices
+                                 ;;mapped-devices
                                  file-systems
+                                 kernel-arguments
                                  swap-devices
                                  (packages %base-packages))
   (operating-system
@@ -39,7 +40,7 @@
     (locale "ko_KR.utf8")
     (kernel linux)
     (bootloader bootloader)
-    (mapped-devices mapped-devices)
+    ;;(mapped-devices mapped-devices)
     (file-systems file-systems)
     (swap-devices
      (let ((device->swap-space
@@ -49,6 +50,7 @@
                   device))))
        (map device->swap-space swap-devices)))
     (firmware firmware)
+    (kernel-arguments %default-kernel-arguments)
     (packages packages)
     (services
       (append

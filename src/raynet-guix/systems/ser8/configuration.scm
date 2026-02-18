@@ -36,9 +36,10 @@
             (mount-point mount-point)
             (type "btrfs")
             (flags '(no-atime))
-            (options (format #f "subvol=~a,compress=zstd,discard=async,space_cache=v2" subvol))
-            ;(dependencies ser8-mapped-devices)
-           )))
+            (options
+              (if (string=? subvol "@swap")
+                  "subvol=@swap,nodatacow,compress=none"
+                  (format #f "subvol=~a,compress=zstd,discard=async,space_cache=v2" subvol))))))
        '(("@" . "/")
          ("@boot" . "/boot")
          ("@home" . "/home")
@@ -55,32 +56,36 @@
     (lambda (x) (equal? (file-system-mount-point x) "/data"))
     btrfs-subvolumes)))
 
+(define boot-fs
+  (car
+   (filter
+    (lambda (x) (equal? (file-system-mount-point x) "/boot"))
+    btrfs-subvolumes)))
+
 (define ser8-file-systems
   (append
    btrfs-subvolumes
    (list
     ;; persist all system data to data
     (file-system
-      (device "/data/system/var/lib")
-      (type "none")
-      (mount-point "/var/lib")
-      (flags '(bind-mount))
-      ;; (options "bind")
-      (dependencies (list data-fs)))
-    (file-system
       (mount-point "/boot/efi")
       (type "vfat")
-      (device (uuid "6B0B-5E9D" 'fat32))) ;;TODO check UUIDs
+      (device (uuid "57EE-1710" 'fat32))
+      (dependencies (list boot-fs))) ;; TODO check UUIDs
     (file-system
                 (mount-point "/tmp")
                 (device "none")
                 (type "tmpfs")
                 (flags '(no-dev no-suid no-atime))
                 (check? #f)))
-      %base-file-systems)) ;; Add %base-file-systems to the end
+      )) ;; Add %base-file-systems to the end
 
 (base-operating-system
  #:hostname "ser8"
+
+;; This safely adds your subvolume flag to the Guix defaults
+ #:kernel-arguments
+ (append '("rootflags=subvol=@"))
 
  #:bootloader
  (bootloader-configuration
@@ -90,7 +95,7 @@
  #:firmware
  (list linux-firmware amdgpu-firmware)
 
- #:mapped-devices ser8-mapped-devices
+ ;;#:mapped-devices ser8-mapped-devices
 
  #:file-systems ser8-file-systems
 
