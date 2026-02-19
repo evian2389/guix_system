@@ -16,8 +16,11 @@
   #:use-module (gnu services dbus)
   #:use-module (gnu services ssh)            ;; For openssh-service-type
   #:use-module (gnu services guix)           ;; For guix-service-type
+  #:use-module (gnu services home)           ;; For guix-home-service-type
   #:use-module (guix gexp)                  ;; For plain-file
   #:use-module (guix store)
+  #:use-module (gnu packages base)           ;; For libc/nscd
+  #:use-module (gnu packages shells)         ;; For zsh
   #:use-module (gnu packages linux)
   #:use-module (gnu packages games)       ;; For steam-devices-udev-rules
   #:use-module (raynet-guix home-services games)

@@ -7,96 +7,99 @@ set -e
 # IMPORTANT:
 # - Run this script from within a 'guix shell' with the necessary tools:
 #   guix shell parted cryptsetup btrfs-progs git make
-#   git clone https://codeberg.org/orka/guix_system.git
+#   git clone https://github.com/evian2389/guix_system.git ;;; https://codeberg.org/orka/guix_system.git
 # - This script will DESTROY all data on the selected disk.
 # - The script assumes the disk has two partitions:
 #   - Partition 1: EFI System Partition (fat32)
 #   - Partition 2: LUKS-encrypted Btrfs partition
 
 # Prompt for the disk device
-read -p "Enter the disk device to partition (e.g., /dev/sda, /dev/nvme0n1): " DISK
-
-if [ -z "$DISK" ]; then
-    echo "No disk device entered. Aborting."
-    exit 1
-fi
-
-echo "WARNING: This will destroy all data on $DISK. Press Enter to continue, or Ctrl+C to abort."
-read
-
+#read -p "Enter the disk device to partition (e.g., /dev/sda, /dev/nvme0n1): " DISK
+#
+#
+#if [ -z "$DISK" ]; then
+#    echo "No disk device entered. Aborting."
+#    exit 1
+#fi
+#
+#echo "WARNING: This will destroy all data on $DISK. Press Enter to continue, or Ctrl+C to abort."
+#read
+#
 # Partition the disk
-sudo parted -s "$DISK" -- mklabel gpt
-sudo parted -s "$DISK" -- mkpart "EFI system partition" fat32 1MiB 1025MiB
-sudo parted -s "$DISK" -- set 1 esp on
-sudo parted -s "$DISK" -- mkpart primary 1025MiB 100%
-
+#parted -s "$DISK" -- mklabel gpt
+#parted -s "$DISK" -- mkpart "EFI system partition" fat32 1MiB 1025MiB
+#parted -s "$DISK" -- set 1 esp on
+#parted -s "$DISK" -- mkpart primary 1025MiB 100%
+#
 # Get the partition names
-EFI_PARTITION="${DISK}1"
-LUKS_PARTITION="${DISK}2"
-if [ ! -b "$EFI_PARTITION" ]; then
-    EFI_PARTITION="${DISK}p1"
-    LUKS_PARTITION="${DISK}p2"
-fi
-
+#EFI_PARTITION="${DISK}1"
+#LUKS_PARTITION="${DISK}2"
+#if [ ! -b "$EFI_PARTITION" ]; then
+#    EFI_PARTITION="${DISK}p1"
+#    LUKS_PARTITION="${DISK}p2"
+#fi
+#
 # Format the EFI partition
-sudo mkfs.fat -F32 "$EFI_PARTITION"
+#mkfs.fat -F32 "$EFI_PARTITION"
 
 # Create the LUKS container
-#sudo cryptsetup luksFormat --type luks2 --pbkdf pbkdf2 "$LUKS_PARTITION"
-#sudo cryptsetup luksOpen "$LUKS_PARTITION" enc
+#cryptsetup luksFormat --type luks2 --pbkdf pbkdf2 "$LUKS_PARTITION"
+#cryptsetup luksOpen "$LUKS_PARTITION" enc
 
 # Create the Btrfs filesystem
-#sudo mkfs.btrfs -L guixroot /dev/mapper/enc
-mkfs.btrfs -L guixroot /dev/nvme...
+#mkfs.btrfs -L guixroot /dev/mapper/enc
+EFI_PARTITION_DEVICE="/dev/nvme0n1p1"
+GUIX_ROOT_DEVICE="/dev/nvme0n1p2" # Update this if your LUKS partition is named differently"
+mkfs.btrfs -L guixroot "$GUIX_ROOT_DEVICE"
 
 # Mount the top-level Btrfs volume
-#sudo mount /dev/mapper/enc /mnt
-sudo mount /dev/nvme... /mnt
+#mount /dev/mapper/enc /mnt
+mount "$GUIX_ROOT_DEVICE" /mnt
 cd /mnt
 
 # Create all the desired subvolumes
-sudo btrfs subvolume create @
-sudo btrfs subvolume create @boot
-sudo btrfs subvolume create @home
-sudo btrfs subvolume create @gnu
-sudo btrfs subvolume create @data
-sudo btrfs subvolume create @var
-sudo btrfs subvolume create @var-log
-sudo btrfs subvolume create @opt
-sudo btrfs subvolume create @swap
+btrfs subvolume create @
+btrfs subvolume create @boot
+btrfs subvolume create @home
+btrfs subvolume create @gnu
+btrfs subvolume create @data
+btrfs subvolume create @var
+btrfs subvolume create @var-log
+btrfs subvolume create @opt
+btrfs subvolume create @swap
 
 
 
 # Unmount the top-level volume
 cd /
-sudo umount /mnt
+umount /mnt
 
 # Mount the subvolumes with compression
 BTRFS_OPTS="rw,noatime,compress=zstd,discard=async,space_cache=v2"
-sudo mount -o $BTRFS_OPTS,subvol=@ /dev/mapper/enc /mnt
-sudo mkdir -p /mnt/{boot,home,gnu,data,var,opt,swap}
-sudo mount -o $BTRFS_OPTS,subvol=@boot /dev/mapper/enc /mnt/boot
-sudo mount -o $BTRFS_OPTS,subvol=@home /dev/mapper/enc /mnt/home
-sudo mount -o $BTRFS_OPTS,subvol=@gnu /dev/mapper/enc /mnt/gnu
-sudo mount -o $BTRFS_OPTS,subvol=@data /dev/mapper/enc /mnt/data
-sudo mount -o $BTRFS_OPTS,subvol=@var /dev/mapper/enc /mnt/var
+mount -o $BTRFS_OPTS,subvol=@ $GUIX_ROOT_DEVICE /mnt
+mkdir -p /mnt/{boot,home,gnu,data,var,opt,swap}
+mount -o $BTRFS_OPTS,subvol=@boot $GUIX_ROOT_DEVICE /mnt/boot
+mount -o $BTRFS_OPTS,subvol=@home $GUIX_ROOT_DEVICE /mnt/home
+mount -o $BTRFS_OPTS,subvol=@gnu $GUIX_ROOT_DEVICE /mnt/gnu
+mount -o $BTRFS_OPTS,subvol=@data $GUIX_ROOT_DEVICE /mnt/data
+mount -o $BTRFS_OPTS,subvol=@var $GUIX_ROOT_DEVICE /mnt/var
 
-sudo mkdir -p /mnt/var/log
+mkdir -p /mnt/var/log
 
-sudo mount -o $BTRFS_OPTS,subvol=@var-log /dev/mapper/enc /mnt/var/log
-sudo mount -o $BTRFS_OPTS,subvol=@opt /dev/mapper/enc /mnt/opt
-sudo mount -o $BTRFS_OPTS,subvol=@swap /dev/mapper/enc /mnt/swap
+mount -o $BTRFS_OPTS,subvol=@var-log $GUIX_ROOT_DEVICE /mnt/var/log
+mount -o $BTRFS_OPTS,subvol=@opt $GUIX_ROOT_DEVICE /mnt/opt
+mount -o nodatacow,compress=none,subvol=@swap $GUIX_ROOT_DEVICE /mnt/swap
 
 # Mount the EFI partition
-sudo mkdir -p /mnt/boot/efi
-sudo mount "$EFI_PARTITION" /mnt/boot/efi
+mkdir -p /mnt/boot/efi
+mount "$EFI_PARTITION" /mnt/boot/efi
 
 
 # Create the swapfile
-sudo btrfs filesystem mkswapfile --size 64g --uuid clear @swap/swapfile
+btrfs filesystem mkswapfile --size 64g --uuid clear @swap/swapfile
 
 # Activate the swapfile
-sudo swapon /mnt/swap/swapfile
+swapon /mnt/swap/swapfile
 export TMPDIR=/mnt/data/raynet-guix/tmp
 mkdir -p $TMPDIR
 
@@ -107,27 +110,30 @@ echo "========================================================================"
 echo "Done. The following UUIDs will be needed for your configuration.scm:"
 echo ""
 echo "LUKS partition UUID:"
-sudo blkid -s UUID -o value "$LUKS_PARTITION"
+blkid -s UUID -o value "$LUKS_PARTITION"
 echo ""
 echo "BTRFS filesystem UUID:"
-sudo blkid -s UUID -o value /dev/mapper/enc
+blkid -s UUID -o value /dev/mapper/enc
 echo "========================================================================"
-# ========================================================================
-# NEXT STEPS:
-# 1. GENERATE PASSWORD HASH:
-#    Before building your system, you need to generate a password hash for the 'orka' user.
-#    Run this command in your terminal (replace "YOUR_PASSWORD_HERE"):
-#    guile -c '(use-modules (gnu home user)) (display (crypt "YOUR_PASSWORD_HERE" (make-salt)))'
-#
-# 2. UPDATE CONFIGURATION.SCM:
-#    Edit 'config/systems/ser8/configuration.scm'.
-#    - Replace "YOUR_LUKS_PARTITION_UUID_HERE" with the LUKS UUID printed above.
-#    - Replace "YOUR_EFI_PARTITION_UUID_HERE" with the UUID of your EFI partition (e.g., from 'sudo blkid /dev/sda1').
-#    - Replace "YOUR_PASSWORD_HASH_HERE" with the hash you generated in step 1.
-#
-# 3. BUILD YOUR SYSTEM:
-#    Once configuration.scm is updated, run:
-#    make cow-store
-#    make init
-#    make install-system
-# ========================================================================
+cat <<'NEXT_STEPS'
+========================================================================
+NEXT STEPS:
+1. GENERATE PASSWORD HASH:
+	Before building your system, you need to generate a password hash for the 'orka' user.
+	Run this command in your terminal (replace "YOUR_PASSWORD_HERE"):
+	guile -c '(use-modules (gnu home user)) (display (crypt "YOUR_PASSWORD_HERE" (make-salt)))'
+
+2. UPDATE CONFIGURATION.SCM:
+	Edit 'config/systems/ser8/configuration.scm'.
+	- Replace "YOUR_LUKS_PARTITION_UUID_HERE" with the LUKS UUID printed above.
+	- Replace "YOUR_EFI_PARTITION_UUID_HERE" with the UUID of your EFI partition (e.g., from 'blkid /dev/sda1').
+	- Replace "YOUR_PASSWORD_HASH_HERE" with the hash you generated in step 1.
+
+3. BUILD YOUR SYSTEM:
+    ### remove guix EFI directory!!!
+	Once configuration.scm is updated, run:
+	make cow-store
+	make init
+	make install-system
+========================================================================
+NEXT_STEPS

@@ -5,7 +5,8 @@
   #:use-module (gnu system file-systems)
   #:use-module (gnu system mapped-devices)
   #:use-module (gnu system accounts)
-  #:use-module (gnu packages linux) ;; <--- Add this for bluez
+  #:use-module (gnu packages admin)
+  #:use-module (gnu packages linux)
   #:use-module (gnu packages file-systems)
   #:use-module (gnu packages version-control)
   #:use-module (gnu packages video)
