@@ -50,7 +50,7 @@ set -e
 #mkfs.btrfs -L guixroot /dev/mapper/enc
 EFI_PARTITION_DEVICE="/dev/nvme0n1p1"
 GUIX_ROOT_DEVICE="/dev/nvme0n1p2" # Update this if your LUKS partition is named differently"
-mkfs.btrfs -L guixroot "$GUIX_ROOT_DEVICE"
+mkfs.btrfs -fL guixroot "$GUIX_ROOT_DEVICE"
 
 # Mount the top-level Btrfs volume
 #mount /dev/mapper/enc /mnt

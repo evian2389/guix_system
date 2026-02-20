@@ -31,7 +31,7 @@
              fcitx5-hangul
              fcitx5-gtk  ; For GTK integration
              fcitx5-qt
-             ;font-nerd-fonts-jetbrains-mono
+             font-nerd-fonts-jetbrainsmono
              ;font-nerd-font-d2coding
              )))      ; Added D2Coding Nerd Font
    (services

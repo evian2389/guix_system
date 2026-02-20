@@ -23,7 +23,8 @@
     (service home-finance-service-type)
     ;;(service home-files-service-type
     ;;         `(( ".bashrc" . ,(local-file (string-append (dirname (current-filename)) "/files/bashrc")))))
-    (service home-dotfiles-service-type
-              (home-dotfiles-configuration
-               (source-directory (local-file "files" #:recursive? #t))
-               (directories (list ".config")))))))
+    ;;(service home-dotfiles-service-type
+    ;;          (home-dotfiles-configuration
+    ;;           (source-directory (local-file "files" #:recursive? #t))
+    ;;           (directories (list ".config"))))
+               )))

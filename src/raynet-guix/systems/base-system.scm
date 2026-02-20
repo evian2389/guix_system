@@ -21,6 +21,8 @@
   #:use-module (gnu packages base)           ;; For libc/nscd
   #:use-module (gnu packages shells)         ;; For zsh
   #:use-module (gnu packages linux)
+  #:use-module (gnu packages fonts)
+  #:use-module (gnu packages tex)
   #:use-module (gnu packages games)       ;; For steam-devices-udev-rules
   #:use-module (raynet-guix home-services games)
   #:use-module (gnu home)
@@ -69,7 +71,16 @@
        (map device->swap-space swap-devices)))
     (firmware firmware)
     (kernel-arguments kernel-arguments)
-    (packages (cons zsh packages))
+    (packages (append (list font-jetbrains-mono
+                        font-gnu-unifont
+                        font-dejavu
+                        font-liberation
+                        font-gnu-freefont
+                        font-un
+                        texlive-baekmu
+                        zsh)
+                  packages))
+
     (services
       (append
        (list (service openssh-service-type)      ;; Enable OpenSSH server
