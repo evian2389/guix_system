@@ -48,9 +48,7 @@
          ("@home" . "/home")
          ("@gnu"  . "/gnu")
          ("@data" . "/data")
-         ("@var"  . "/var")
          ("@var-log" . "/var/log")
-         ("@opt"  . "/opt")
          ("@swap" . "/swap"))))
 
 (define data-fs
@@ -70,6 +68,13 @@
    btrfs-subvolumes
    (list
     ;; persist all system data to data
+    (file-system
+      (device "/data/system/var/lib")
+      (type "none")
+      (mount-point "/var/lib")
+      (flags '(bind-mount))
+      ;; (options "bind")
+      (dependencies (list data-fs)))
     (file-system
       (mount-point "/boot/efi")
       (type "vfat")
