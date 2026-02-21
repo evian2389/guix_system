@@ -1,13 +1,13 @@
 # Guix System Configuration for ser8 (orka user)
 
-This repository contains my Guix System and Guix Home configurations, tailored for the `ser8` machine and `orka` user. It features LUKS encryption, Btrfs with subvolumes, GNOME desktop, PipeWire audio, and Steam controller support.
+This repository contains my Guix System and Guix Home configurations, tailored for the `ser8` machine and `orka` user. It features LUKS encryption, Btrfs with subvolumes, KDE Plasma desktop, PipeWire audio, and Steam controller support.
 
 ## Overview
 
 *   **System Name:** `ser8`
 *   **User Name:** `orka`
 *   **Disk Setup:** LUKS2 encrypted root partition with Btrfs filesystem and multiple subvolumes (`@`, `@home`, `@boot`, `@var`, etc.).
-*   **Desktop Environment:** GNOME
+*   **Desktop Environment:** KDE Plasma
 *   **Audio:** Explicitly configured PipeWire.
 *   **Korean IME:** Fcitx5 with Hangul support.
 *   **Default Shell (User):** Zsh
@@ -34,7 +34,7 @@ This repository contains my Guix System and Guix Home configurations, tailored f
         *   `emacs.scm`: Defines custom Emacs packages used by `home-services/emacs.scm`.
     *   `systems/`: System-specific configurations.
         *   `ser8/`:
-            *   `configuration.scm`: Main Guix System config for `ser8`, including LUKS, Btrfs, GNOME, PipeWire, `orka` user, and integrated Steam system support.
+            *   `configuration.scm`: Main Guix System config for `ser8`, including LUKS, Btrfs, KDE Plasma, PipeWire, `orka` user, and integrated Steam system support.
     *   `users/`: User-specific configurations.
         *   `orka/`:
             *   `home.scm`: Main Guix Home config for `orka`, inheriting common settings, integrating various home services (Emacs, Steam, Video, Finance), and managing dotfiles.

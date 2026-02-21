@@ -74,7 +74,8 @@ reconfigure-home:
 
 install-user-packages:
 	@echo "Installing extra packages for user $(DEFAULT_USER)..."
-	$(GUIX_TM) package -p $(HOME)/.guix-profiles/$(DEFAULT_USER)-extra -f $(CONFIG_DIR)/users/$(DEFAULT_USER)/manifest.scm
+	$(GUIX_TM) package -p $(HOME)/.guix-profiles/$(DEFAULT_USER)-extra \
+		-m $(CONFIG_DIR)/users/$(DEFAULT_USER)/manifest.scm
 
 # 'channel-update' MUST use the guix from the pulled profile to see all channels.
 channel-update:

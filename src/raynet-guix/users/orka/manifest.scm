@@ -1,18 +1,19 @@
-(use-modules (guix)
-             (gnu packages screen)     ; For neofetch
-             (gnu packages text-editors) ; For helix
-             (gnu packages vim)        ; For neovim
-             (gnu packages video)      ; For mpv
-             (nongnu packages chrome)
-             (nongnu packages vscode)
-             (abbe packages ghostty))   ; For ghostty terminal
+(define-module (raynet-guix users orka manifest)
+  #:use-module (guix profiles)
+  #:use-module (gnu packages video)         ; for mpv
+  #:use-module (gnu packages text-editors)   ; for helix
+  #:use-module (gnu packages vim)   ; neovim
+  #:use-module (abbe packages neovim)        ; for neovim
+  #:use-module (nongnu packages chrome)      ; for google-chrome-stable
+  #:use-module (px packages editors)         ; for antigravity
+  #:export (orka-manifest))
 
-(specifications->manifest
- (list
-  "google-chrome"
-  "vscode"
-  "mpv"
-  "ghostty"
-  "neofetch"
-  "helix"
-  "neovim"))
+(define orka-manifest
+  (packages->manifest
+   (list google-chrome-stable
+         antigravity
+         mpv
+         helix
+         neovim)))
+
+orka-manifest

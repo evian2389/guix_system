@@ -15,25 +15,25 @@
   #:use-module (abbe packages nerd-fonts)    ; For font-nerd-font-d2coding
   #:use-module (gnu services)
   #:use-module (guix gexp) ; For define*
-  #:export (common-home-environment))
+  #:export (common-home-environment
+            extra-packages))
 
-(define* (common-home-environment #:key (extra-packages '()) (extra-services '()))
+(define extra-packages
+  (list
+   htop
+   fastfetch
+   zsh
+   mpv
+   fcitx5
+   fcitx5-hangul
+   fcitx5-gtk
+   fcitx5-qt
+   ;;font-nerd-fonts-jetbrainsmono
+   ))
+
+(define* (common-home-environment #:key (extra-packages extra-packages) (extra-services '()))
   (home-environment
-   (packages
-    (append extra-packages
-            (list
-             git
-             rust
-             htop    ; Moved back to common
-             zsh
-             mpv
-             fcitx5
-             fcitx5-hangul
-             fcitx5-gtk  ; For GTK integration
-             fcitx5-qt
-             font-nerd-fonts-jetbrainsmono
-             ;font-nerd-font-d2coding
-             )))      ; Added D2Coding Nerd Font
+   (packages extra-packages)
    (services
     (append extra-services
             (list

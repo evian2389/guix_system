@@ -11,11 +11,16 @@
   #:use-module (raynet-guix home-services finance)    ; For home-finance-service-type
   #:use-module (srfi srfi-1)
   #:use-module (guix utils)
-  #:use-module (raynet-guix users common))
+  #:use-module (raynet-guix users common)
+  #:use-module (raynet-guix packages base-utils))
+
+(define orka-extra-packages
+  (append development-tools
+          system-tools))
 
 (define orka-home-environment
   (common-home-environment
-   #:extra-packages %base-packages ;; Assuming %base-packages are orka-specific
+   #:extra-packages (append orka-extra-packages extra-packages)
    #:extra-services
    (list
     (service home-games-service-type)
@@ -28,3 +33,5 @@
     ;;           (source-directory (local-file "files" #:recursive? #t))
     ;;           (directories (list ".config"))))
                )))
+
+orka-home-environment

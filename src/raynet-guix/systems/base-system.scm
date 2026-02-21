@@ -22,6 +22,7 @@
   #:use-module (gnu packages shells)         ;; For zsh
   #:use-module (gnu packages linux)
   #:use-module (gnu packages fonts)
+  #:use-module (gnu packages terminals)
   #:use-module (gnu packages tex)
   #:use-module (gnu packages games)       ;; For steam-devices-udev-rules
   #:use-module (raynet-guix home-services games)
@@ -77,14 +78,15 @@
                         font-liberation
                         font-gnu-freefont
                         font-un
-                        texlive-baekmu
-                        zsh)
+                        texlive-baekmuk
+                        zsh
+			                  alacritty)
                   packages))
 
     (services
       (append
        (list (service openssh-service-type)      ;; Enable OpenSSH server
-             (service gnome-desktop-service-type)
+             (service plasma-desktop-service-type)
              ;; Add udev rules for Steam devices
              (udev-rules-service 'steam-devices steam-devices-udev-rules)
              (service guix-home-service-type
