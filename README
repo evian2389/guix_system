@@ -55,9 +55,7 @@ btrfs subvolume create @boot
 btrfs subvolume create @home
 btrfs subvolume create @gnu
 btrfs subvolume create @data
-btrfs subvolume create @var
 btrfs subvolume create @var_log
-btrfs subvolume create @opt
 btrfs subvolume create @swap
 
 btrfs subvolume snapshot -r @ blank@
