@@ -47,6 +47,7 @@
 (define system-tools
   (list
     fd
+    eza
     ghostty
     zoxide
     ripgrep

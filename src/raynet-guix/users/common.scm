@@ -4,6 +4,7 @@
   #:use-module (gnu home services shells) ; Added for zsh
   #:use-module (gnu home services sound) ; Added for pipewire
   #:use-module (gnu home services desktop)
+  #:use-module (gnu packages freedesktop)
   #:use-module (gnu packages fcitx5) ; Added for fcitx5
   #:use-module (gnu packages admin) ; For htop
   #:use-module (gnu packages version-control) ; For git
@@ -25,6 +26,8 @@
    fastfetch
    zsh
    mpv
+   xdg-utils
+   desktop-file-utils
    fcitx5
    fcitx5-configtool
    fcitx5-hangul
@@ -53,6 +56,7 @@
                                ("GTK_IM_MODULE" . "fcitx")
                                ("QT_IM_MODULE" . "fcitx")
                                ("SDL_IM_MODULE" . "fcitx")
+                               ("XDG_DATA_DIRS" . "$HOME/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:$HOME/.local/share:$XDG_DATA_DIRS")
                                ;; Best setup for KDE Plasma 5.27+ Wayland:
                                ;; Do not set GTK_IM_MODULE, QT_IM_MODULE, or SDL_IM_MODULE.
                                ;; They should be unset to use the text-input protocol.

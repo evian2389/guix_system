@@ -1,5 +1,4 @@
 (define-module (raynet-guix users orka home)
-  #:export (orka-home-environment)
   #:use-module (gnu)
   #:use-module (guix)
   #:use-module (gnu home)
@@ -12,7 +11,8 @@
   #:use-module (srfi srfi-1)
   #:use-module (guix utils)
   #:use-module (raynet-guix users common)
-  #:use-module (raynet-guix packages base-utils))
+  #:use-module (raynet-guix packages base-utils)
+  #:export (orka-home-environment))
 
 (define orka-extra-packages
   (append development-tools
@@ -26,12 +26,11 @@
     (service home-games-service-type)
     ;(service home-emacs-config-service-type)
     (service home-finance-service-type)
-    ;;(service home-files-service-type
-    ;;         `(( ".bashrc" . ,(local-file (string-append (dirname (current-filename)) "/files/bashrc")))))
-    ;;(service home-dotfiles-service-type
-    ;;          (home-dotfiles-configuration
-    ;;           (source-directory (local-file "files" #:recursive? #t))
-    ;;           (directories (list ".config"))))
-               )))
+    ; (service home-dotfiles-service-type
+    ;          (home-dotfiles-configuration
+    ;           (source-directory (string-append (dirname (current-filename)) "/files"))
+    ;           (directories (list ".config" ".local"))
+    ;           (files `((".zshrc" ,(local-file (string-append (dirname (current-filename)) "/files/.zshrc")))))))
+              )))
 
 orka-home-environment
